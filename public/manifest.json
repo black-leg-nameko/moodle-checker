@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "Moodle出席環境チェッカー",
+  "version": "1.0.0",
+  "description": "学外ネットワークからのMoodleアクセスを検知・警告します",
+  "permissions": [
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  }
+}

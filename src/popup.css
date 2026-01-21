@@ -1,0 +1,112 @@
+:root {
+    --primary: #3b82f6;
+    --primary-hover: #2563eb;
+    --bg: #f9fafb;
+    --text: #1f2937;
+    --border: #e5e7eb;
+}
+
+/* body自体を中央揃えの基点にする */
+body {
+    width: 320px;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    width: 100%;
+    padding: 1.5rem;
+    box-sizing: border-box; /* パディングを含めた幅計算 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;    /* 横方向の中央寄せ */
+    text-align: center;      /* テキストの中央寄せ */
+}
+
+header, main, footer, section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+label {
+    width: 100%;
+    text-align: center; /* ラベルも中央 */
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+input {
+    width: 100%; /* containerのpadding内いっぱいに広げる */
+    max-width: 260px;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 1rem;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.btn-primary {
+    width: 100%;
+    max-width: 260px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 8px;
+}
+
+.config-table {
+    width: 100%;
+    margin-top: 10px;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    table-layout: fixed; /* テーブル幅を固定 */
+}
+
+.config-table th, .config-table td {
+    padding: 12px 5px;
+    border: 1px solid var(--border);
+    text-align: center; /* セル内も中央 */
+    word-break: break-all;
+}
+
+.config-table th { 
+    background: #f3f4f6; 
+    color: #6b7280; 
+    font-weight: 600; 
+}
+
+.highlight {
+    font-family: monospace;
+    color: var(--primary);
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+footer {
+    margin-top: 1.5rem;
+    font-size: 0.7rem;
+    color: #9ca3af;
+}

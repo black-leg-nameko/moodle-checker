@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="warning.css">
+    <title>ネットワークチェック - Moodle Guard</title>
+</head>
+<body>
+    <div class="card">
+        <div id="icon" class="status-icon">⚠️</div>
+        <h1 id="title">接続を制限しました</h1>
+        
+        <div class="chart-container">
+            <div id="donut" class="donut" aria-label="safety chart"></div>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-item">
+                <span class="label">サーバー検知IP</span>
+                <span id="public-ip" class="value">---</span>
+            </div>
+            <div class="info-item">
+                <span class="label">判定結果</span>
+                <span id="result-status" class="value">NG</span>
+            </div>
+        </div>
+
+        <p id="description" style="font-size: 0.9rem; line-height: 1.5;">
+            学外ネットワークを検知しました。このままでは出席判定が正しく行われない可能性があります。
+        </p>
+
+        <div class="btn-group">
+            <a href="javascript:location.reload()" class="btn btn-primary">再チェック</a>
+            <a href="#" id="proceed-link" class="btn btn-ghost">リスクを承知で続行</a>
+            <a href="#" id="settings-link" class="btn btn-ghost">設定を確認する</a>
+        </div>
+    </div>
+
+    <script src="warning-ui.js"></script>
+</body>
+</html>

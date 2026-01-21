@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      body { width: 250px; padding: 15px; font-family: sans-serif; }
+      h2 { font-size: 16px; margin-bottom: 10px; }
+      input { width: 100%; padding: 8px; box-sizing: border-box; margin-bottom: 10px; }
+      button { width: 100%; padding: 8px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 4px; }
+      .status { font-size: 12px; color: green; margin-top: 5px; height: 15px; }
+    </style>
+  </head>
+  <body>
+    <h2>学内IP設定</h2>
+    <p style="font-size: 11px; color: #666;">
+      大学のグローバルIPの先頭部分を入力してください（例: 133.5）
+    </p>
+    <input type="text" id="ip-prefix" placeholder="例: 133.5" />
+    <button id="save-btn">保存する</button>
+    <div id="status" class="status"></div>
+
+    <script type="module" src="./popup.ts"></script>
+  </body>
+</html>

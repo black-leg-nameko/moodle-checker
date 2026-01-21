@@ -6,7 +6,6 @@
     --border: #e5e7eb;
 }
 
-/* body自体を中央揃えの基点にする */
 body {
     width: 320px;
     margin: 0;
@@ -21,11 +20,11 @@ body {
 .container {
     width: 100%;
     padding: 1.5rem;
-    box-sizing: border-box; /* パディングを含めた幅計算 */
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    align-items: center;    /* 横方向の中央寄せ */
-    text-align: center;      /* テキストの中央寄せ */
+    align-items: center;
+    text-align: center;
 }
 
 header, main, footer, section {
@@ -45,14 +44,14 @@ header, main, footer, section {
 
 label {
     width: 100%;
-    text-align: center; /* ラベルも中央 */
+    text-align: center;
     font-size: 0.85rem;
     font-weight: 600;
     margin-bottom: 4px;
 }
 
 input {
-    width: 100%; /* containerのpadding内いっぱいに広げる */
+    width: 100%;
     max-width: 260px;
     padding: 10px;
     border: 1px solid var(--border);
@@ -82,13 +81,13 @@ input {
     background: white;
     border-radius: 8px;
     overflow: hidden;
-    table-layout: fixed; /* テーブル幅を固定 */
+    table-layout: fixed;
 }
 
 .config-table th, .config-table td {
     padding: 12px 5px;
     border: 1px solid var(--border);
-    text-align: center; /* セル内も中央 */
+    text-align: center;
     word-break: break-all;
 }
 

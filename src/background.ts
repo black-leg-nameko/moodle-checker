@@ -3,6 +3,27 @@ import { getRawIPs } from './network';
 // One-time bypass per tab when the user chooses "Proceed"
 const bypassNextNavByTab = new Map<number, string>();
 
+async function checkNetwork(url: string): Promise<{ ip?: string; reason: 'ok' | 'vpn_active' | 'outside_campus' | 'not_configured'; }> {
+  const result = await chrome.storage.sync.get(['campusIpPrefix']);
+  const campusPrefix = result.campusIpPrefix as string | undefined;
+  if (!campusPrefix) {
+    return { reason: 'not_configured' };
+  }
+  try {
+    const response = await fetch('https://api.ipify.org?format=json');
+    const { ip: publicIp } = await response.json();
+    const rawIps = await getRawIPs();
+    const isPublicIpCampus = publicIp.startsWith(campusPrefix);
+    const isPhysicalInCampus = rawIps.some(ip => typeof ip === 'string' && ip.startsWith(campusPrefix));
+    if (isPublicIpCampus) {
+      return { ip: publicIp, reason: 'ok' };
+    }
+    return { ip: publicIp, reason: isPhysicalInCampus ? 'vpn_active' : 'outside_campus' };
+  } catch (_e) {
+    return { reason: 'outside_campus' };
+  }
+}
+
 async function checkAndNavigate(tabId: number, url: string) {
   const result = await chrome.storage.sync.get(['campusIpPrefix']);
   const campusPrefix = result.campusIpPrefix as string | undefined;
@@ -103,16 +124,10 @@ chrome.runtime.onInstalled.addListener((details) => {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message?.type === 'check' && typeof message?.target === 'string') {
-    const tabId = sender.tab?.id;
-    if (typeof tabId === 'number') {
-      checkAndNavigate(tabId, message.target)
-        .then(() => sendResponse({ ok: true }))
-        .catch(() => sendResponse({ ok: false }));
-      return true;
-    } else {
-      sendResponse({ ok: false, error: 'no_tab' });
-      return false;
-    }
+    checkNetwork(message.target)
+      .then((r) => sendResponse({ ok: true, ...r }))
+      .catch(() => sendResponse({ ok: false }));
+    return true;
   }
   if (message?.type === 'bypass' && typeof message?.target === 'string') {
     const tabId = sender.tab?.id;

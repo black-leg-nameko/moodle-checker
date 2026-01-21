@@ -5,7 +5,8 @@
   "description": "学外ネットワークからのMoodleアクセスを検知・警告します",
   "permissions": [
     "storage",
-    "tabs"
+    "tabs",
+    "webNavigation"
   ],
   "host_permissions": [
     "<all_urls>"

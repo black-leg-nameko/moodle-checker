@@ -33,6 +33,20 @@ if (reason === 'not_configured') {
     document.getElementById('description').textContent = '大学のIPアドレス設定が完了していません。拡張機能のアイコンをクリックして、学内Wi-FiのIPプレフィックスを設定してください。';
 }
 
+if (reason === 'checking') {
+    document.getElementById('icon').textContent = '⏳';
+    document.getElementById('title').textContent = '確認中です';
+    document.getElementById('result-status').textContent = 'Checking';
+    document.getElementById('description').textContent = 'ネットワーク環境を確認しています。少々お待ちください。';
+    (async () => {
+        try {
+            await chrome.runtime.sendMessage({ type: 'check', target });
+        } catch (_e) {
+            // ignore
+        }
+    })();
+}
+
 // Proceed (at your own risk): notify background to set a one-time bypass, then navigate
 const proceedLink = document.getElementById('proceed-link');
 proceedLink.addEventListener('click', async (e) => {

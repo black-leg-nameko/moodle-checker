@@ -3,7 +3,7 @@ import { getRawIPs } from './network';
 // One-time bypass per tab when the user chooses "Proceed"
 const bypassNextNavByTab = new Map<number, string>();
 
-async function checkNetwork(url: string): Promise<{ ip?: string; reason: 'ok' | 'vpn_active' | 'outside_campus' | 'not_configured'; }> {
+async function checkNetwork(): Promise<{ ip?: string; reason: 'ok' | 'vpn_active' | 'outside_campus' | 'not_configured'; }> {
   const result = await chrome.storage.sync.get(['campusIpPrefix']);
   const campusPrefix = result.campusIpPrefix as string | undefined;
   if (!campusPrefix) {
@@ -21,37 +21,6 @@ async function checkNetwork(url: string): Promise<{ ip?: string; reason: 'ok' | 
     return { ip: publicIp, reason: isPhysicalInCampus ? 'vpn_active' : 'outside_campus' };
   } catch (_e) {
     return { reason: 'outside_campus' };
-  }
-}
-
-async function checkAndNavigate(tabId: number, url: string) {
-  const result = await chrome.storage.sync.get(['campusIpPrefix']);
-  const campusPrefix = result.campusIpPrefix as string | undefined;
-  if (!campusPrefix) {
-    const warningUrl = chrome.runtime.getURL(`warning.html?reason=not_configured&target=${encodeURIComponent(url)}`);
-    await chrome.tabs.update(tabId, { url: warningUrl });
-    return;
-  }
-
-  try {
-    const response = await fetch('https://api.ipify.org?format=json');
-    const { ip: publicIp } = await response.json();
-
-    const rawIps = await getRawIPs();
-
-    const isPublicIpCampus = publicIp.startsWith(campusPrefix);
-    const isPhysicalInCampus = rawIps.some(ip => typeof ip === 'string' && ip.startsWith(campusPrefix));
-
-    if (isPublicIpCampus) {
-      bypassNextNavByTab.set(tabId, url);
-      await chrome.tabs.update(tabId, { url });
-    } else {
-      const reason = isPhysicalInCampus ? "vpn_active" : "outside_campus";
-      const warningUrl = chrome.runtime.getURL(`warning.html?ip=${publicIp}&reason=${reason}&target=${encodeURIComponent(url)}`);
-      await chrome.tabs.update(tabId, { url: warningUrl });
-    }
-  } catch (error) {
-    console.error("ネットワークチェック失敗:", error);
   }
 }
 
@@ -124,7 +93,7 @@ chrome.runtime.onInstalled.addListener((details) => {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message?.type === 'check' && typeof message?.target === 'string') {
-    checkNetwork(message.target)
+    checkNetwork()
       .then((r) => sendResponse({ ok: true, ...r }))
       .catch(() => sendResponse({ ok: false }));
     return true;
